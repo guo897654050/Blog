@@ -10,7 +10,7 @@ import markdown
 
 def index(request):
    #global post_lists
-    post_list = Post.objects.all().order_by('-create_time')
+    post_list = Post.objects.all().order_by('-pk')
     paginator = Paginator(post_list,4)#每页显示4篇文章
     print(paginator)
     page = request.GET.get('page')#用户点击page
@@ -116,3 +116,4 @@ def search(request):
         return render(request, 'blog/index.html', {'error_msg':error_msg})
     post_list = Post.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
     return render(request, 'blog/index.html',{'contacts':post_list,'error_msg':error_msg})
+
