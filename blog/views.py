@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from .models import Post, Category
+from .models import Post, Category, Tag
 from comments.forms import CommentForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
@@ -9,7 +9,7 @@ import markdown
 
 def index(request):
     post_list = Post.objects.all().order_by('-create_time')
-    paginator = Paginator(post_list,4)#每页显示2篇文章
+    paginator = Paginator(post_list,4)#每页显示4篇文章
     print(paginator)
     page = request.GET.get('page')#用户点击page
     try:
@@ -49,10 +49,53 @@ def archives(request, year, month):
     post_list = Post.objects.filter(create_time__year = year,
                                     create_time__month = month,
                                     ).order_by('-create_time')
-    return render(request, 'blog/index.html',context={'post_list':post_list})
+    paginator = Paginator(post_list, 4)  # 每页显示4篇文章
+    page = request.GET.get('page')  # 用户点击page
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        contacts = paginator.page(1)
+    except EmptyPage:
+        contacts = paginator.page(paginator.num_pages)
+    context = {
+        'post_list': post_list,
+        'contacts': contacts,
+    }
+    return render(request, 'blog/index.html', context)
 
 #分类页面
 def category(request, pk):
     cate = get_object_or_404(Category, pk=pk)
     post_list = Post.objects.filter(category=cate).order_by('-create_time')
-    return render(request, 'blog/index.html', context={'post_list':post_list})
+    paginator = Paginator(post_list, 4)  # 每页显示4篇文章
+    print(paginator)
+    page = request.GET.get('page')  # 用户点击page
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        contacts = paginator.page(1)
+    except EmptyPage:
+        contacts = paginator.page(paginator.num_pages)
+    context = {
+        'post_list': post_list,
+        'contacts': contacts,
+    }
+    return render(request, 'blog/index.html', context)
+#标签
+def tag(request, pk):
+    tag = get_object_or_404(Tag, pk=pk)
+    post_list = Post.objects.filter(tags=tag).order_by('-create_time')
+    paginator = Paginator(post_list, 4)  # 每页显示4篇文章
+    print(paginator)
+    page = request.GET.get('page')  # 用户点击page
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        contacts = paginator.page(1)
+    except EmptyPage:
+        contacts = paginator.page(paginator.num_pages)
+    context = {
+        'post_list': post_list,
+        'contacts': contacts,
+    }
+    return render(request, 'blog/index.html', context)
