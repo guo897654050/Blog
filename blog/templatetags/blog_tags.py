@@ -7,7 +7,7 @@ register = template.Library()
 @register.simple_tag
 def get_recent_posts(num=5):
     #获取数据库前num篇文章，num=5
-    return Post.objects.all().order_by('-create_time')[:num]
+    return Post.objects.all().order_by('-pk')[:num]
 
 @register.simple_tag
 def archives():
