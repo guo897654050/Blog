@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% block main %}
+  {% if error_msg %}
+    <p>{{ error_msg }}</p>
+  {% endif %}
 
                 {% for post in contacts %}
                     <article class="post post-{{ post.pk }}">
@@ -27,6 +30,7 @@
                 {% empty %}
                     <div class="no-post">暂时还没有发布的文章！</div>
                 {% endfor %}
+{% endblock main %}
 
                 <!-- 简单分页效果 -->
                 <div class="pagination-simple">
@@ -60,4 +64,3 @@
                     </ul>
                 </div>
                 -->
-            {% endblock main %}

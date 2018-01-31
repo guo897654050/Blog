@@ -4,13 +4,14 @@ from .models import Post, Category, Tag
 from comments.forms import CommentForm
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
+from django.db.models import Q
 import markdown
 # Create your views here.
 
 def index(request):
    #global post_lists
     post_list = Post.objects.all().order_by('-create_time')
-    paginator = Paginator(post_list,2)#每页显示4篇文章
+    paginator = Paginator(post_list,4)#每页显示4篇文章
     print(paginator)
     page = request.GET.get('page')#用户点击page
     try:
@@ -55,25 +56,25 @@ def archives(request, year, month):
     post_list = Post.objects.filter(create_time__year = year,
                                     create_time__month = month,
                                     ).order_by('-create_time')
-    # paginator = Paginator(post_list, 4)  # 每页显示4篇文章
-    # page = request.GET.get('page')  # 用户点击page
-    # try:
-    #     contacts = paginator.page(page)
-    # except PageNotAnInteger:
-    #     contacts = paginator.page(1)
-    # except EmptyPage:
-    #     contacts = paginator.page(paginator.num_pages)
-    # context = {
-    #     'post_list': post_list,
-    #     'contacts': contacts,
-    # }
+    paginator = Paginator(post_list, 4)  # 每页显示4篇文章
+    page = request.GET.get('page')  # 用户点击page
+    try:
+        contacts = paginator.page(page)
+    except PageNotAnInteger:
+        contacts = paginator.page(1)
+    except EmptyPage:
+        contacts = paginator.page(paginator.num_pages)
+    context = {
+        'post_list': post_list,
+        'contacts': contacts,
+    }
     return render(request, 'blog/index.html', {'contacts':post_list})
 
 #分类页面
 def category(request, pk):
     cate = get_object_or_404(Category, pk=pk)
     post_list = Post.objects.filter(category=cate).order_by('-create_time')
-    paginator = Paginator(post_list, 2)  # 每页显示4篇文章
+    paginator = Paginator(post_list, 4)  # 每页显示4篇文章
     print(paginator)
     page = request.GET.get('page')  # 用户点击page
     try:
@@ -105,3 +106,13 @@ def tag(request, pk):
         'contacts': contacts,
     }
     return render(request, 'blog/index.html', context)
+
+#search
+def search(request):
+    q = request.GET.get('q')
+    error_msg = ''
+    if not q:
+        error_msg = "请输入关键词"
+        return render(request, 'blog/index.html', {'error_msg':error_msg})
+    post_list = Post.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
+    return render(request, 'Blog/index.html',{'contacts':post_list,'error_msg':error_msg})
