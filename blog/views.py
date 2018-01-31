@@ -115,4 +115,4 @@ def search(request):
         error_msg = "请输入关键词"
         return render(request, 'blog/index.html', {'error_msg':error_msg})
     post_list = Post.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
-    return render(request, 'Blog/index.html',{'contacts':post_list,'error_msg':error_msg})
+    return render(request, 'blog/index.html',{'contacts':post_list,'error_msg':error_msg})
