@@ -30,7 +30,7 @@
                 {% empty %}
                     <div class="no-post">暂时还没有发布的文章！</div>
                 {% endfor %}
-{% endblock main %}
+
 
                 <!-- 简单分页效果 -->
                 <div class="pagination-simple">
@@ -48,6 +48,7 @@
                     <a href="?page={{ contacts.next_page_number }}">下一页</a>
                     {% endif %}
                 </div>
+{% endblock main %}
 
 <!--
                 <div class="pagination">

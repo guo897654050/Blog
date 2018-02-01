@@ -11,8 +11,8 @@ import markdown
 def index(request):
    #global post_lists
     post_list = Post.objects.all().order_by('-pk')
+    print(post_list)
     paginator = Paginator(post_list,4)#每页显示4篇文章
-    print(paginator)
     page = request.GET.get('page')#用户点击page
     try:
         contacts = paginator.page(page)
@@ -40,7 +40,7 @@ def detail(request, pk):
     # 获取这篇 post 下的全部评论
     #posts = Post.objects.all().order_by('-create_time')
     posts = Post.objects.all().order_by('-pk')[:5]
-    print(posts)
+    #print(posts)
     comment_list = post.comment_set.all()
     # 将文章、表单、以及文章下的评论列表作为模板变量传给 detail.html 模板，以便渲染相应数据。
     context = {
