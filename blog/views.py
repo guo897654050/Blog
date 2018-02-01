@@ -55,7 +55,7 @@ def detail(request, pk):
 def archives(request, year, month):
     post_list = Post.objects.filter(create_time__year = year,
                                     create_time__month = month,
-                                    ).order_by('-create_time')
+                                    ).order_by('-pk')
     paginator = Paginator(post_list, 4)  # 每页显示4篇文章
     page = request.GET.get('page')  # 用户点击page
     try:
@@ -73,7 +73,7 @@ def archives(request, year, month):
 #分类页面
 def category(request, pk):
     cate = get_object_or_404(Category, pk=pk)
-    post_list = Post.objects.filter(category=cate).order_by('-create_time')
+    post_list = Post.objects.filter(category=cate).order_by('-pk')
     paginator = Paginator(post_list, 4)  # 每页显示4篇文章
     print(paginator)
     page = request.GET.get('page')  # 用户点击page
@@ -91,7 +91,7 @@ def category(request, pk):
 #标签
 def tag(request, pk):
     tag = get_object_or_404(Tag, pk=pk)
-    post_list = Post.objects.filter(tags=tag).order_by('-create_time')
+    post_list = Post.objects.filter(tags=tag).order_by('-pk')
     paginator = Paginator(post_list, 4)  # 每页显示4篇文章
     print(paginator)
     page = request.GET.get('page')  # 用户点击page
