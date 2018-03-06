@@ -25,7 +25,6 @@ SECRET_KEY = 'z&3y+9__ealo6ild4i6h!s)mk2j4i#+ii1#eg(s!e*$(0aywdq'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost','.xiaoyangguo.cc']
 
 
@@ -124,3 +123,6 @@ STATIC_URL = '/static/'
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 #ubuntu下静态资源路径
 STATIC_ROOT = '/var/www/static/'
+
+
+#github

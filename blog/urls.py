@@ -10,5 +10,7 @@ urlpatterns = [
     url(r'^category/(?P<pk>[0-9]+)/$', views.category, name='category'),
     url(r'^tag/(?P<pk>[0-9]+)/$', views.tag, name='tag'),
     url(r'^search/$', views.search, name='search'),
+   # url(r'^send_file/$', views.send_file, name='send_file'),
+    #url(r'^sss/$', views.sss, name='sss'),
 ]
 urlpatterns += staticfiles_urlpatterns()
